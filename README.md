@@ -32,15 +32,54 @@ heartbeat-anomaly-detection/
 
 - Python 3.9+
 - TensorFlow: 2.10.1
-- CUDA Toolkit: 11.8
-- cuDNN: 8.9.4 (для CUDA 11.x)
+- CUDA Toolkit: 11.8 <sub>(*только если требуется ускорение на GPU, для CPU не нужен*)</sub>
+- cuDNN: 8.9.4 (для CUDA 11.x) <sub>(*только если требуется ускорение на GPU, для CPU не нужен*)</sub>
 
 > Для корректной работы на GPU убедитесь, что у вас установлены совместимые версии CUDA и cuDNN для TensorFlow 2.10.x.
 >  
 > ⚠️ См. официальную таблицу совместимости: [TensorFlow GPU Support](https://www.tensorflow.org/install/source#gpu)
+>
+> **Примечание:**  
+> Если у вас нет дискретной видеокарты NVIDIA или вы не хотите использовать GPU — CUDA Toolkit и cuDNN устанавливать НЕ обязательно, всё будет работать на CPU "из коробки".
 
 ---
 
+## Инструкция по установке
+
+<details>
+<summary><b>Как установить CUDA Toolkit и cuDNN для работы на GPU</b></summary>
+
+1. Скачайте и установите **CUDA Toolkit 11.8**:
+    - [CUDA Toolkit 11.8 Download](https://developer.nvidia.com/cuda-11-8-0-download-archive)
+    - Выберите вашу ОС и скачайте инсталлятор (Windows: local `.exe`, Linux: `.run`).
+    - Установите в папку, например: `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8`
+
+2. Скачайте **cuDNN 8.9.4 для CUDA 11.x**:
+    - [cuDNN 8.9.4 Download](https://developer.nvidia.com/rdp/cudnn-archive)
+    - Выберите версию под вашу ОС (Windows или Linux)
+    - Распакуйте архив (например, `cudnn-windows-x86_64-8.9.4.25_cuda11-archive.zip`)
+
+3. Скопируйте содержимое cuDNN в CUDA Toolkit:
+    - содержимое `bin` → в `CUDA\v11.8\bin\`
+    - содержимое `include` → в `CUDA\v11.8\include\`
+    - содержимое `lib` → в `CUDA\v11.8\lib\x64\` (Windows) или `lib64` (Linux)
+
+4. Проверьте переменные среды (Windows):
+    - Добавьте в PATH:
+        - `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\bin`
+        - `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8\libnvvp`
+    - `CUDA_PATH` или `CUDA_HOME` укажите на `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.8`
+
+5. Проверьте установку:
+    - В терминале: `nvcc --version`
+    - В Python:
+      ```python
+      import tensorflow as tf
+      print(tf.config.list_physical_devices('GPU'))
+      ```
+</details>
+
+---
 
 ## 🚀 Быстрый старт
 
